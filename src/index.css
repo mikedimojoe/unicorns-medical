@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+:root {
+  /* Schwäbisch Hall Unicorns */
+  --primary: #5D1A8B;        /* Unicorns Lila */
+  --primary-light: #7B2DB8;
+  --primary-dark: #3D1060;
+  --secondary: #F0A500;      /* Unicorns Gold */
+  --secondary-light: #F5C040;
+  --secondary-dark: #C07800;
+  --bg: #0A0614;
+  --bg-card: #150D24;
+  --bg-card2: #1C1036;
+  --border: #2A1A4A;
+  --text-muted: #9B8FBF;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,7 +23,7 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #0A0612;
+  background: var(--bg);
   color: #fff;
   min-height: 100vh;
 }
@@ -20,5 +35,5 @@ body {
 }
 
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #1A1030; }
-::-webkit-scrollbar-thumb { background: #5B2D8E; border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--bg-card); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }

@@ -29,7 +29,7 @@ export function SquadList({ players, onPlayerSelect }: Props) {
     return matchSearch && matchUnit && matchStatus;
   });
 
-  const inputStyle = { background: '#1A1030', border: '1px solid #2D1F4E' };
+  const inputStyle = { background: '#150D24', border: '1px solid #2A1A4A' };
 
   return (
     <div className="p-6 space-y-5">
@@ -40,7 +40,7 @@ export function SquadList({ players, onPlayerSelect }: Props) {
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#6B5F8F' }} />
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#6A5F8F' }} />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -65,15 +65,15 @@ export function SquadList({ players, onPlayerSelect }: Props) {
         </select>
       </div>
 
-      <div className="text-xs" style={{ color: '#6B5F8F' }}>{filtered.length} Ergebnisse</div>
+      <div className="text-xs" style={{ color: '#6A5F8F' }}>{filtered.length} Ergebnisse</div>
 
-      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2D1F4E' }}>
+      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2A1A4A' }}>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr style={{ background: '#120B22' }}>
+              <tr style={{ background: '#0E0820' }}>
                 {['#', 'Spieler', 'Pos', 'Einheit', 'Status', 'Verletzung', 'ETR'].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold" style={{ color: '#6B5F8F' }}>{h}</th>
+                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold" style={{ color: '#6A5F8F' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -85,30 +85,30 @@ export function SquadList({ players, onPlayerSelect }: Props) {
                     key={p.id}
                     onClick={() => onPlayerSelect(p)}
                     className="cursor-pointer transition-colors hover:bg-white/5"
-                    style={{ borderTop: '1px solid #2D1F4E', background: i % 2 === 0 ? '#1A1030' : '#150D28' }}
+                    style={{ borderTop: '1px solid #2A1A4A', background: i % 2 === 0 ? '#150D24' : '#120A20' }}
                   >
                     <td className="px-4 py-3">
-                      <span className="text-sm font-bold" style={{ color: '#D4A017' }}>{p.number}</span>
+                      <span className="text-sm font-bold" style={{ color: '#F0A500' }}>{p.number}</span>
                     </td>
                     <td className="px-4 py-3">
                       <span className="text-sm font-medium text-white">{p.name}</span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded" style={{ background: '#2D1F4E', color: '#C084FC' }}>{p.position}</span>
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded" style={{ background: '#2A1A4A', color: '#BB6FFA' }}>{p.position}</span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs" style={{ color: p.unit === 'Offense' ? '#D4A017' : '#7B3DB8' }}>{p.unit}</span>
+                      <span className="text-xs" style={{ color: p.unit === 'Offense' ? '#F0A500' : '#7B2DB8' }}>{p.unit}</span>
                     </td>
                     <td className="px-4 py-3">
                       <span className={`text-xs px-2 py-0.5 rounded-full ${col.bg} ${col.text}`}>{shortLabel[p.status]}</span>
                     </td>
                     <td className="px-4 py-3 max-w-xs">
-                      <span className="text-xs truncate block" style={{ color: p.injury ? '#9B8FBF' : '#3D3060', maxWidth: 200 }}>
+                      <span className="text-xs truncate block" style={{ color: p.injury ? '#9B8FBF' : '#3A2860', maxWidth: 200 }}>
                         {p.injury || '–'}
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs" style={{ color: '#D4A017' }}>{p.etr || '–'}</span>
+                      <span className="text-xs" style={{ color: '#F0A500' }}>{p.etr || '–'}</span>
                     </td>
                   </tr>
                 );

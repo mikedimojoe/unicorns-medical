@@ -33,7 +33,7 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: '#0A0612' }}>
+    <div className="flex h-screen overflow-hidden" style={{ background: '#0A0614' }}>
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -43,7 +43,7 @@ export default function App() {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="flex items-center gap-4 px-5 py-3 flex-shrink-0 lg:hidden"
-          style={{ background: '#120B22', borderBottom: '1px solid #2D1F4E' }}>
+          style={{ background: '#0E0820', borderBottom: '1px solid #2A1A4A' }}>
           <button
             onClick={() => setSidebarOpen(true)}
             className="p-2 rounded-lg hover:bg-white/10 transition-colors"

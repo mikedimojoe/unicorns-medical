@@ -61,7 +61,7 @@ export function Dashboard({ players, onPlayerSelect }: Props) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="rounded-xl p-5" style={{ background: '#1A1030', border: '1px solid #2D1F4E' }}>
+        <div className="rounded-xl p-5" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
           <h2 className="text-sm font-semibold text-white mb-4">Status Verteilung</h2>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
@@ -69,7 +69,7 @@ export function Dashboard({ players, onPlayerSelect }: Props) {
                 {pieData.map((_, i) => <Cell key={i} fill={COLORS[i]} />)}
               </Pie>
               <Tooltip
-                contentStyle={{ background: '#1A1030', border: '1px solid #2D1F4E', borderRadius: 8, color: '#fff', fontSize: 12 }}
+                contentStyle={{ background: '#150D24', border: '1px solid #2A1A4A', borderRadius: 8, color: '#fff', fontSize: 12 }}
                 formatter={(val, name) => [val, shortLabel[name as Status] || name]}
               />
             </PieChart>
@@ -84,23 +84,23 @@ export function Dashboard({ players, onPlayerSelect }: Props) {
           </div>
         </div>
 
-        <div className="rounded-xl p-5" style={{ background: '#1A1030', border: '1px solid #2D1F4E' }}>
+        <div className="rounded-xl p-5" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
           <h2 className="text-sm font-semibold text-white mb-4">Einheitsfitness</h2>
           <div className="space-y-5">
             {[
-              { label: 'Offense', score: offScore, count: offensePlayers.length, color: '#D4A017' },
-              { label: 'Defense', score: defScore, count: defensePlayers.length, color: '#5B2D8E' },
+              { label: 'Offense', score: offScore, count: offensePlayers.length, color: '#F0A500' },
+              { label: 'Defense', score: defScore, count: defensePlayers.length, color: '#5D1A8B' },
             ].map(({ label, score, count, color }) => (
               <div key={label}>
                 <div className="flex justify-between mb-2">
                   <span className="text-sm font-medium text-white">{label}</span>
                   <span className="text-sm font-bold" style={{ color }}>{score}%</span>
                 </div>
-                <div className="h-3 rounded-full overflow-hidden" style={{ background: '#2D1F4E' }}>
+                <div className="h-3 rounded-full overflow-hidden" style={{ background: '#2A1A4A' }}>
                   <div className="h-full rounded-full transition-all duration-700"
                     style={{ width: `${score}%`, background: `linear-gradient(90deg, ${color}88, ${color})` }} />
                 </div>
-                <div className="text-xs mt-1" style={{ color: '#6B5F8F' }}>{count} Spieler</div>
+                <div className="text-xs mt-1" style={{ color: '#6A5F8F' }}>{count} Spieler</div>
               </div>
             ))}
           </div>
@@ -109,8 +109,8 @@ export function Dashboard({ players, onPlayerSelect }: Props) {
             {(['Offense', 'Defense'] as const).map(unit => {
               const ups = players.filter(p => p.unit === unit);
               return (
-                <div key={unit} className="rounded-lg p-3" style={{ background: '#0F0A1A' }}>
-                  <div className="text-xs font-semibold mb-2" style={{ color: unit === 'Offense' ? '#D4A017' : '#7B3DB8' }}>{unit}</div>
+                <div key={unit} className="rounded-lg p-3" style={{ background: '#0A0614' }}>
+                  <div className="text-xs font-semibold mb-2" style={{ color: unit === 'Offense' ? '#F0A500' : '#7B2DB8' }}>{unit}</div>
                   <div className="text-xs space-y-1" style={{ color: '#9B8FBF' }}>
                     <div className="flex justify-between"><span>Fit:</span><span className="text-emerald-400">{ups.filter(p => p.status === 'Full Training').length}</span></div>
                     <div className="flex justify-between"><span>Mon.:</span><span className="text-yellow-400">{ups.filter(p => p.status === 'Full Training (Monitored)').length}</span></div>
@@ -124,7 +124,7 @@ export function Dashboard({ players, onPlayerSelect }: Props) {
         </div>
       </div>
 
-      <div className="rounded-xl p-5" style={{ background: '#1A1030', border: '1px solid #2D1F4E' }}>
+      <div className="rounded-xl p-5" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
         <h2 className="text-sm font-semibold text-white mb-4">Aktuelle Verletzungen ({recentInjured.length})</h2>
         <div className="space-y-2">
           {recentInjured.map(p => {
@@ -134,10 +134,10 @@ export function Dashboard({ players, onPlayerSelect }: Props) {
                 key={p.id}
                 onClick={() => onPlayerSelect(p)}
                 className="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-all hover:bg-white/5"
-                style={{ border: '1px solid #2D1F4E' }}
+                style={{ border: '1px solid #2A1A4A' }}
               >
                 <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
-                  style={{ background: '#2D1F4E', color: '#D4A017' }}>
+                  style={{ background: '#2A1A4A', color: '#F0A500' }}>
                   {p.number}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -147,7 +147,7 @@ export function Dashboard({ players, onPlayerSelect }: Props) {
                 <div className={`text-xs px-2 py-0.5 rounded-full ${col.bg} ${col.text} flex-shrink-0`}>
                   {p.status === 'Full Training (Monitored)' ? 'Monitored' : p.status === 'Return to Play (Physio/S+C)' ? 'RTP' : p.status}
                 </div>
-                {p.etr && <div className="text-xs flex-shrink-0" style={{ color: '#D4A017' }}>↩ {p.etr}</div>}
+                {p.etr && <div className="text-xs flex-shrink-0" style={{ color: '#F0A500' }}>↩ {p.etr}</div>}
               </button>
             );
           })}

@@ -60,7 +60,7 @@ export function PlayerDetail({ player, onBack, onUpdate }: Props) {
     weeks: h.etr ? (parseInt(h.etr) || 1) : 1,
   }));
 
-  const inputStyle = { background: '#0F0A1A', border: '1px solid #2D1F4E' };
+  const inputStyle = { background: '#0A0614', border: '1px solid #2A1A4A' };
 
   return (
     <div className="p-6 space-y-6">
@@ -69,16 +69,16 @@ export function PlayerDetail({ player, onBack, onUpdate }: Props) {
       </button>
 
       <div className="rounded-xl p-5 flex items-center gap-4"
-        style={{ background: 'linear-gradient(135deg, #1A1030, #221540)', border: '1px solid #2D1F4E' }}>
+        style={{ background: 'linear-gradient(135deg, #150D24, #1C1036)', border: '1px solid #2A1A4A' }}>
         <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg, #5B2D8E, #D4A017)', color: '#fff' }}>
+          style={{ background: 'linear-gradient(135deg, #5D1A8B, #F0A500)', color: '#fff' }}>
           {player.number}
         </div>
         <div className="flex-1">
           <h1 className="text-xl font-bold text-white">{player.name}</h1>
           <div className="flex items-center gap-3 mt-1">
-            <span className="text-xs font-semibold px-2 py-0.5 rounded" style={{ background: '#2D1F4E', color: '#C084FC' }}>{player.position}</span>
-            <span className="text-xs" style={{ color: player.unit === 'Offense' ? '#D4A017' : '#7B3DB8' }}>{player.unit}</span>
+            <span className="text-xs font-semibold px-2 py-0.5 rounded" style={{ background: '#2A1A4A', color: '#BB6FFA' }}>{player.position}</span>
+            <span className="text-xs" style={{ color: player.unit === 'Offense' ? '#F0A500' : '#7B2DB8' }}>{player.unit}</span>
             <span className={`text-xs px-2 py-0.5 rounded-full ${col.bg} ${col.text}`}>{player.status}</span>
           </div>
           {player.injury && <p className="text-sm mt-2" style={{ color: '#9B8FBF' }}>🤕 {player.injury}</p>}
@@ -86,7 +86,7 @@ export function PlayerDetail({ player, onBack, onUpdate }: Props) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div className="rounded-xl p-5 space-y-4" style={{ background: '#1A1030', border: '1px solid #2D1F4E' }}>
+        <div className="rounded-xl p-5 space-y-4" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
           <h2 className="text-sm font-semibold text-white">Status aktualisieren</h2>
 
           <div>
@@ -120,9 +120,9 @@ export function PlayerDetail({ player, onBack, onUpdate }: Props) {
 
           {returnDate && (
             <div className="flex items-center gap-2 rounded-lg px-3 py-2.5"
-              style={{ background: '#D4A01720', border: '1px solid #D4A01740' }}>
-              <Clock size={14} style={{ color: '#D4A017' }} />
-              <span className="text-sm" style={{ color: '#D4A017' }}>
+              style={{ background: '#F0A50020', border: '1px solid #F0A50040' }}>
+              <Clock size={14} style={{ color: '#F0A500' }} />
+              <span className="text-sm" style={{ color: '#F0A500' }}>
                 Voraussichtliche Rückkehr: <strong>{new Date(returnDate).toLocaleDateString('de-DE')}</strong>
               </span>
             </div>
@@ -138,16 +138,16 @@ export function PlayerDetail({ player, onBack, onUpdate }: Props) {
 
           <button onClick={saveChanges}
             className="w-full py-2.5 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ background: 'linear-gradient(135deg, #5B2D8E, #7B3DB8)' }}>
+            style={{ background: 'linear-gradient(135deg, #5D1A8B, #7B2DB8)' }}>
             Speichern
           </button>
         </div>
 
         {aiRec && (
-          <div className="rounded-xl p-5 space-y-4" style={{ background: '#1A1030', border: '1px solid #2D1F4E' }}>
+          <div className="rounded-xl p-5 space-y-4" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-white flex items-center gap-2">
-                <Brain size={16} style={{ color: '#C084FC' }} /> KI-Analyse
+                <Brain size={16} style={{ color: '#BB6FFA' }} /> KI-Analyse
               </h2>
               <span className="text-xs px-2 py-0.5 rounded-full font-medium"
                 style={{ background: severityColor[aiRec.severity] + '20', color: severityColor[aiRec.severity] }}>
@@ -190,19 +190,19 @@ export function PlayerDetail({ player, onBack, onUpdate }: Props) {
       </div>
 
       {player.injuryHistory.length > 0 && (
-        <div className="rounded-xl p-5" style={{ background: '#1A1030', border: '1px solid #2D1F4E' }}>
+        <div className="rounded-xl p-5" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
           <h2 className="text-sm font-semibold text-white mb-4">Verletzungshistorie</h2>
           <ResponsiveContainer width="100%" height={120}>
             <BarChart data={historyChartData} layout="vertical">
               <XAxis type="number" hide />
               <YAxis type="category" dataKey="name" width={80} tick={{ fontSize: 10, fill: '#9B8FBF' }} />
               <Tooltip
-                contentStyle={{ background: '#1A1030', border: '1px solid #2D1F4E', borderRadius: 8, color: '#fff', fontSize: 11 }}
+                contentStyle={{ background: '#150D24', border: '1px solid #2A1A4A', borderRadius: 8, color: '#fff', fontSize: 11 }}
                 formatter={(_val, _name, props) => [props.payload.injury, 'Verletzung']}
               />
               <Bar dataKey="weeks" radius={4}>
                 {historyChartData.map((_, i) => (
-                  <Cell key={i} fill={i % 2 === 0 ? '#5B2D8E' : '#D4A017'} />
+                  <Cell key={i} fill={i % 2 === 0 ? '#5D1A8B' : '#F0A500'} />
                 ))}
               </Bar>
             </BarChart>
@@ -211,14 +211,14 @@ export function PlayerDetail({ player, onBack, onUpdate }: Props) {
           <div className="mt-4 space-y-2">
             {player.injuryHistory.map(h => (
               <div key={h.id} className="rounded-lg px-3 py-2.5 flex items-start gap-3"
-                style={{ background: '#0F0A1A', border: '1px solid #2D1F4E' }}>
-                <div className="text-xs min-w-20" style={{ color: '#6B5F8F' }}>
+                style={{ background: '#0A0614', border: '1px solid #2A1A4A' }}>
+                <div className="text-xs min-w-20" style={{ color: '#6A5F8F' }}>
                   {new Date(h.date).toLocaleDateString('de-DE')}
                 </div>
                 <div className="flex-1">
                   <div className="text-sm text-white">{h.injury}</div>
                   {h.returnDate && (
-                    <div className="text-xs mt-0.5" style={{ color: '#D4A017' }}>
+                    <div className="text-xs mt-0.5" style={{ color: '#F0A500' }}>
                       Rückkehr: {new Date(h.returnDate).toLocaleDateString('de-DE')}
                     </div>
                   )}

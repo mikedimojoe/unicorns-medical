@@ -42,7 +42,7 @@ export function InjuryTracker({ players, onUpdate }: Props) {
 
   const returnDate = injuryDate && etr ? calculateReturnDate(injuryDate, etr) : null;
   const severityColor: Record<string, string> = { low: '#10b981', medium: '#f59e0b', high: '#f97316', critical: '#ef4444' };
-  const inputStyle = { background: '#0F0A1A', border: '1px solid #2D1F4E' };
+  const inputStyle = { background: '#0A0614', border: '1px solid #2A1A4A' };
 
   function save() {
     if (!selected) return;
@@ -76,13 +76,13 @@ export function InjuryTracker({ players, onUpdate }: Props) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl p-5 space-y-4" style={{ background: '#1A1030', border: '1px solid #2D1F4E' }}>
+        <div className="rounded-xl p-5 space-y-4" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
           <h2 className="text-sm font-semibold text-white">Verletzung erfassen</h2>
 
           <div className="relative">
             <label className="text-xs mb-1.5 block" style={{ color: '#9B8FBF' }}>Spieler suchen</label>
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#6B5F8F' }} />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#6A5F8F' }} />
               <input
                 value={search}
                 onChange={e => { setSearch(e.target.value); setSelected(null); setSaved(false); }}
@@ -93,11 +93,11 @@ export function InjuryTracker({ players, onUpdate }: Props) {
             </div>
             {filtered.length > 0 && !selected && (
               <div className="absolute z-10 w-full mt-1 rounded-lg overflow-hidden"
-                style={{ background: '#1A1030', border: '1px solid #2D1F4E' }}>
+                style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
                 {filtered.slice(0, 6).map(p => (
                   <button key={p.id} onClick={() => selectPlayer(p)}
                     className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5 transition-colors">
-                    <span className="text-xs font-bold" style={{ color: '#D4A017', minWidth: 24 }}>#{p.number}</span>
+                    <span className="text-xs font-bold" style={{ color: '#F0A500', minWidth: 24 }}>#{p.number}</span>
                     <span className="text-sm text-white">{p.name}</span>
                     <span className="text-xs ml-auto" style={{ color: '#9B8FBF' }}>{p.position}</span>
                   </button>
@@ -107,10 +107,10 @@ export function InjuryTracker({ players, onUpdate }: Props) {
           </div>
 
           {selected && (
-            <div className="flex items-center gap-2 rounded-lg px-3 py-2" style={{ background: '#5B2D8E20', border: '1px solid #5B2D8E40' }}>
-              <span className="font-bold text-sm" style={{ color: '#D4A017' }}>#{selected.number}</span>
+            <div className="flex items-center gap-2 rounded-lg px-3 py-2" style={{ background: '#5D1A8B20', border: '1px solid #5D1A8B40' }}>
+              <span className="font-bold text-sm" style={{ color: '#F0A500' }}>#{selected.number}</span>
               <span className="text-sm font-medium text-white">{selected.name}</span>
-              <span className="text-xs ml-auto" style={{ color: '#C084FC' }}>{selected.position} · {selected.unit}</span>
+              <span className="text-xs ml-auto" style={{ color: '#BB6FFA' }}>{selected.position} · {selected.unit}</span>
             </div>
           )}
 
@@ -147,9 +147,9 @@ export function InjuryTracker({ players, onUpdate }: Props) {
 
           {returnDate && (
             <div className="flex items-center gap-2 rounded-lg px-3 py-2.5"
-              style={{ background: '#D4A01720', border: '1px solid #D4A01740' }}>
-              <Clock size={14} style={{ color: '#D4A017' }} />
-              <span className="text-sm" style={{ color: '#D4A017' }}>
+              style={{ background: '#F0A50020', border: '1px solid #F0A50040' }}>
+              <Clock size={14} style={{ color: '#F0A500' }} />
+              <span className="text-sm" style={{ color: '#F0A500' }}>
                 Voraussichtliche Rückkehr: <strong>{new Date(returnDate).toLocaleDateString('de-DE')}</strong>
               </span>
             </div>
@@ -167,17 +167,17 @@ export function InjuryTracker({ players, onUpdate }: Props) {
             className="w-full py-2.5 rounded-lg text-sm font-semibold text-white transition-all disabled:opacity-40"
             style={saved
               ? { background: '#10b98120', border: '1px solid #10b981' }
-              : { background: 'linear-gradient(135deg, #5B2D8E, #7B3DB8)' }}>
+              : { background: 'linear-gradient(135deg, #5D1A8B, #7B2DB8)' }}>
             {saved ? '✓ Gespeichert' : 'Verletzung speichern'}
           </button>
         </div>
 
         <div className="space-y-4">
           {aiRec ? (
-            <div className="rounded-xl p-5 space-y-4" style={{ background: '#1A1030', border: '1px solid #2D1F4E' }}>
+            <div className="rounded-xl p-5 space-y-4" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-white flex items-center gap-2">
-                  <Brain size={16} style={{ color: '#C084FC' }} /> KI-Diagnoseassistent
+                  <Brain size={16} style={{ color: '#BB6FFA' }} /> KI-Diagnoseassistent
                 </h2>
                 <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
                   style={{ background: severityColor[aiRec.severity] + '20', color: severityColor[aiRec.severity] }}>
@@ -214,28 +214,28 @@ export function InjuryTracker({ players, onUpdate }: Props) {
                 </ul>
               </div>
 
-              <div className="rounded-lg p-3" style={{ background: '#0F0A1A' }}>
+              <div className="rounded-lg p-3" style={{ background: '#0A0614' }}>
                 <h3 className="text-xs font-semibold mb-1.5" style={{ color: '#9B8FBF' }}>Return-to-Play</h3>
                 <p className="text-xs" style={{ color: '#C4B8E0' }}>{aiRec.returnProtocol}</p>
               </div>
             </div>
           ) : (
             <div className="rounded-xl p-8 flex flex-col items-center justify-center text-center"
-              style={{ background: '#1A1030', border: '1px dashed #2D1F4E' }}>
-              <Brain size={32} style={{ color: '#2D1F4E' }} className="mb-3" />
-              <p className="text-sm" style={{ color: '#6B5F8F' }}>Gib eine Verletzungsdiagnose ein, um eine KI-Empfehlung zu erhalten</p>
+              style={{ background: '#150D24', border: '1px dashed #2A1A4A' }}>
+              <Brain size={32} style={{ color: '#2A1A4A' }} className="mb-3" />
+              <p className="text-sm" style={{ color: '#6A5F8F' }}>Gib eine Verletzungsdiagnose ein, um eine KI-Empfehlung zu erhalten</p>
             </div>
           )}
 
-          <div className="rounded-xl p-5" style={{ background: '#1A1030', border: '1px solid #2D1F4E' }}>
+          <div className="rounded-xl p-5" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
             <h2 className="text-sm font-semibold text-white mb-3">Aktuelle Verletzungen</h2>
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {players.filter(p => p.injury).map(p => {
                 const col = statusColors[p.status];
                 return (
                   <div key={p.id} className="flex items-center gap-3 rounded-lg px-3 py-2"
-                    style={{ background: '#0F0A1A', border: '1px solid #2D1F4E' }}>
-                    <span className="text-xs font-bold flex-shrink-0" style={{ color: '#D4A017', minWidth: 28 }}>#{p.number}</span>
+                    style={{ background: '#0A0614', border: '1px solid #2A1A4A' }}>
+                    <span className="text-xs font-bold flex-shrink-0" style={{ color: '#F0A500', minWidth: 28 }}>#{p.number}</span>
                     <div className="flex-1 min-w-0">
                       <div className="text-xs font-medium text-white truncate">{p.name}</div>
                       <div className="text-xs truncate" style={{ color: '#9B8FBF' }}>{p.injury}</div>
