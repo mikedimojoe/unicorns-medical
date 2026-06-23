@@ -1,39 +1,44 @@
 @import "tailwindcss";
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap";
 
 :root {
-  /* Schwäbisch Hall Unicorns */
-  --primary: #5D1A8B;        /* Unicorns Lila */
-  --primary-light: #7B2DB8;
-  --primary-dark: #3D1060;
-  --secondary: #F0A500;      /* Unicorns Gold */
-  --secondary-light: #F5C040;
-  --secondary-dark: #C07800;
-  --bg: #0A0614;
-  --bg-card: #150D24;
-  --bg-card2: #1C1036;
-  --border: #2A1A4A;
-  --text-muted: #9B8FBF;
+  /* DEF LAB base scheme */
+  --bg: #111111;
+  --bg2: #0d0d0d;
+  --surface: #1a1a1a;
+  --surface2: #222222;
+  --border: #2a2a2a;
+  --text: #e8e8e8;
+  --text2: #aaaaaa;
+  --text3: #555555;
+
+  /* Schwäbisch Hall Unicorns team colors */
+  --team-primary: #154734;
+  --team-primary-rgb: 21, 71, 52;
+  --accent: #ffffff;
+  --accent-rgb: 255, 255, 255;
+  --accent-dim: rgba(255, 255, 255, 0.08);
 }
 
-* {
+*, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+html, body, #root {
+  height: 100%;
   background: var(--bg);
-  color: #fff;
-  min-height: 100vh;
+  color: var(--text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
 }
 
-#root {
-  width: 100%;
-  min-height: 100vh;
-  text-align: left;
-}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg-card); }
-::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+select, input, button, textarea { font-family: inherit; }
+a { color: inherit; text-decoration: none; }

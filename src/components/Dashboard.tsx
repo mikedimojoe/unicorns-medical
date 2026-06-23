@@ -8,6 +8,16 @@ interface Props {
 }
 
 const STATUS_ORDER: Status[] = ['Full Training', 'Full Training (Monitored)', 'Return to Play (Physio/S+C)', 'Out'];
+const SHORT: Record<Status, string> = {
+  'Full Training': 'Fit',
+  'Full Training (Monitored)': 'Monitored',
+  'Return to Play (Physio/S+C)': 'RTP',
+  'Out': 'Out',
+};
+const PIE_COLORS = ['#4CAF82', 'var(--accent)', '#f97316', '#ef4444'];
+
+const card = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12 };
+const card2 = { background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8 };
 
 export function Dashboard({ players, onPlayerSelect }: Props) {
   const counts = STATUS_ORDER.reduce((acc, s) => {
@@ -15,108 +25,102 @@ export function Dashboard({ players, onPlayerSelect }: Props) {
     return acc;
   }, {} as Record<Status, number>);
 
-  const offensePlayers = players.filter(p => p.unit === 'Offense');
-  const defensePlayers = players.filter(p => p.unit === 'Defense');
+  const fitness = (ps: Player[]) => ps.length === 0 ? 0
+    : Math.round(ps.reduce((s, p) => s + statusWeight[p.status], 0) / ps.length);
 
-  const fitnessScore = (ps: Player[]) => {
-    if (ps.length === 0) return 0;
-    return Math.round(ps.reduce((sum, p) => sum + statusWeight[p.status], 0) / ps.length);
-  };
+  const offScore = fitness(players.filter(p => p.unit === 'Offense'));
+  const defScore = fitness(players.filter(p => p.unit === 'Defense'));
 
   const pieData = STATUS_ORDER.map(s => ({ name: s, value: counts[s] }));
-  const COLORS = ['#10b981', '#f59e0b', '#f97316', '#ef4444'];
-
-  const shortLabel: Record<Status, string> = {
-    'Full Training': 'Fit',
-    'Full Training (Monitored)': 'Monitored',
-    'Return to Play (Physio/S+C)': 'RTP',
-    'Out': 'Out',
-  };
-
-  const recentInjured = players.filter(p => p.status !== 'Full Training' && p.injury);
-  const offScore = fitnessScore(offensePlayers);
-  const defScore = fitnessScore(defensePlayers);
+  const injured = players.filter(p => p.status !== 'Full Training' && p.injury);
 
   return (
-    <div className="p-6 space-y-6">
+    <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div>
-        <h1 className="text-2xl font-bold text-white">Squad Übersicht</h1>
-        <p style={{ color: '#9B8FBF' }} className="text-sm mt-1">Season 2026 · {players.length} Spieler im Kader</p>
+        <h1 style={{ fontSize: 20, fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>Squad Übersicht</h1>
+        <p style={{ color: 'var(--text3)', fontSize: 13 }}>Season 2026 · {players.length} Spieler im Kader</p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {STATUS_ORDER.map((s) => {
+      {/* Status cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+        {STATUS_ORDER.map((s, i) => {
           const col = statusColors[s];
           return (
-            <div key={s} className={`rounded-xl p-4 ${col.bg}`} style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
-              <div className="flex items-center gap-2 mb-2">
+            <div key={s} style={{ ...card, padding: '14px 16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
                 <span className={`w-2 h-2 rounded-full ${col.dot}`} />
-                <span className={`text-xs font-medium ${col.text}`}>{shortLabel[s]}</span>
+                <span className={`text-xs font-medium ${col.text}`}>{SHORT[s]}</span>
               </div>
-              <div className="text-3xl font-bold text-white">{counts[s]}</div>
-              <div className="text-xs mt-1" style={{ color: '#9B8FBF' }}>Spieler</div>
+              <div style={{ fontSize: 28, fontWeight: 800, color: PIE_COLORS[i] }}>{counts[s]}</div>
+              <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>Spieler</div>
             </div>
           );
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="rounded-xl p-5" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
-          <h2 className="text-sm font-semibold text-white mb-4">Status Verteilung</h2>
-          <ResponsiveContainer width="100%" height={200}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        {/* Pie chart */}
+        <div style={{ ...card, padding: 20 }}>
+          <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 16 }}>Status Verteilung</h2>
+          <ResponsiveContainer width="100%" height={180}>
             <PieChart>
-              <Pie data={pieData} cx="50%" cy="50%" innerRadius={55} outerRadius={85} paddingAngle={3} dataKey="value">
-                {pieData.map((_, i) => <Cell key={i} fill={COLORS[i]} />)}
+              <Pie data={pieData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={3} dataKey="value">
+                {pieData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i]} />)}
               </Pie>
               <Tooltip
-                contentStyle={{ background: '#150D24', border: '1px solid #2A1A4A', borderRadius: 8, color: '#fff', fontSize: 12 }}
-                formatter={(val, name) => [val, shortLabel[name as Status] || name]}
+                contentStyle={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)', fontSize: 12 }}
+                formatter={(val, name) => [val, SHORT[name as Status] || name]}
               />
             </PieChart>
           </ResponsiveContainer>
-          <div className="flex flex-wrap gap-3 mt-2">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 8 }}>
             {STATUS_ORDER.map((s, i) => (
-              <div key={s} className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full" style={{ background: COLORS[i] }} />
-                <span className="text-xs" style={{ color: '#9B8FBF' }}>{shortLabel[s]}</span>
+              <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: PIE_COLORS[i], flexShrink: 0 }} />
+                <span style={{ fontSize: 11, color: 'var(--text3)' }}>{SHORT[s]}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="rounded-xl p-5" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
-          <h2 className="text-sm font-semibold text-white mb-4">Einheitsfitness</h2>
-          <div className="space-y-5">
+        {/* Fitness bars */}
+        <div style={{ ...card, padding: 20 }}>
+          <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 16 }}>Einheitsfitness</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {[
-              { label: 'Offense', score: offScore, count: offensePlayers.length, color: '#F0A500' },
-              { label: 'Defense', score: defScore, count: defensePlayers.length, color: '#5D1A8B' },
-            ].map(({ label, score, count, color }) => (
+              { label: 'Offense', score: offScore, color: 'var(--accent)', count: players.filter(p => p.unit === 'Offense').length },
+              { label: 'Defense', score: defScore, color: 'var(--team-primary)', count: players.filter(p => p.unit === 'Defense').length },
+            ].map(({ label, score, color, count }) => (
               <div key={label}>
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm font-medium text-white">{label}</span>
-                  <span className="text-sm font-bold" style={{ color }}>{score}%</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <span style={{ fontSize: 13, color: 'var(--text)' }}>{label}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color }}>{score}%</span>
                 </div>
-                <div className="h-3 rounded-full overflow-hidden" style={{ background: '#2A1A4A' }}>
-                  <div className="h-full rounded-full transition-all duration-700"
-                    style={{ width: `${score}%`, background: `linear-gradient(90deg, ${color}88, ${color})` }} />
+                <div style={{ height: 8, borderRadius: 4, background: 'var(--border)', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${score}%`, background: color, borderRadius: 4, transition: 'width 0.7s' }} />
                 </div>
-                <div className="text-xs mt-1" style={{ color: '#6A5F8F' }}>{count} Spieler</div>
+                <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 4 }}>{count} Spieler</div>
               </div>
             ))}
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-3">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 20 }}>
             {(['Offense', 'Defense'] as const).map(unit => {
               const ups = players.filter(p => p.unit === unit);
               return (
-                <div key={unit} className="rounded-lg p-3" style={{ background: '#0A0614' }}>
-                  <div className="text-xs font-semibold mb-2" style={{ color: unit === 'Offense' ? '#F0A500' : '#7B2DB8' }}>{unit}</div>
-                  <div className="text-xs space-y-1" style={{ color: '#9B8FBF' }}>
-                    <div className="flex justify-between"><span>Fit:</span><span className="text-emerald-400">{ups.filter(p => p.status === 'Full Training').length}</span></div>
-                    <div className="flex justify-between"><span>Mon.:</span><span className="text-yellow-400">{ups.filter(p => p.status === 'Full Training (Monitored)').length}</span></div>
-                    <div className="flex justify-between"><span>RTP:</span><span className="text-orange-400">{ups.filter(p => p.status === 'Return to Play (Physio/S+C)').length}</span></div>
-                    <div className="flex justify-between"><span>Out:</span><span className="text-red-400">{ups.filter(p => p.status === 'Out').length}</span></div>
-                  </div>
+                <div key={unit} style={{ ...card2, padding: 12 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 8, color: unit === 'Offense' ? 'var(--accent)' : 'var(--team-primary)' }}>{unit}</div>
+                  {[
+                    { label: 'Fit', cls: 'text-emerald-400', s: 'Full Training' as Status },
+                    { label: 'Mon.', cls: 'text-yellow-400', s: 'Full Training (Monitored)' as Status },
+                    { label: 'RTP', cls: 'text-orange-400', s: 'Return to Play (Physio/S+C)' as Status },
+                    { label: 'Out', cls: 'text-red-400', s: 'Out' as Status },
+                  ].map(({ label, cls, s }) => (
+                    <div key={s} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
+                      <span style={{ fontSize: 11, color: 'var(--text3)' }}>{label}</span>
+                      <span className={`text-xs font-medium ${cls}`}>{ups.filter(p => p.status === s).length}</span>
+                    </div>
+                  ))}
                 </div>
               );
             })}
@@ -124,30 +128,27 @@ export function Dashboard({ players, onPlayerSelect }: Props) {
         </div>
       </div>
 
-      <div className="rounded-xl p-5" style={{ background: '#150D24', border: '1px solid #2A1A4A' }}>
-        <h2 className="text-sm font-semibold text-white mb-4">Aktuelle Verletzungen ({recentInjured.length})</h2>
-        <div className="space-y-2">
-          {recentInjured.map(p => {
+      {/* Injured list */}
+      <div style={{ ...card, padding: 20 }}>
+        <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 14 }}>Aktuelle Verletzungen ({injured.length})</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {injured.map(p => {
             const col = statusColors[p.status];
             return (
-              <button
-                key={p.id}
-                onClick={() => onPlayerSelect(p)}
-                className="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-all hover:bg-white/5"
-                style={{ border: '1px solid #2A1A4A' }}
+              <button key={p.id} onClick={() => onPlayerSelect(p)}
+                style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', cursor: 'pointer', width: '100%', textAlign: 'left', transition: 'background 0.15s' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface2)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               >
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
-                  style={{ background: '#2A1A4A', color: '#F0A500' }}>
+                <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--surface2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: 'var(--accent)', flexShrink: 0 }}>
                   {p.number}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-white truncate">{p.name}</div>
-                  <div className="text-xs truncate" style={{ color: '#9B8FBF' }}>{p.injury}</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text3)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.injury}</div>
                 </div>
-                <div className={`text-xs px-2 py-0.5 rounded-full ${col.bg} ${col.text} flex-shrink-0`}>
-                  {p.status === 'Full Training (Monitored)' ? 'Monitored' : p.status === 'Return to Play (Physio/S+C)' ? 'RTP' : p.status}
-                </div>
-                {p.etr && <div className="text-xs flex-shrink-0" style={{ color: '#F0A500' }}>↩ {p.etr}</div>}
+                <span className={`text-xs px-2 py-0.5 rounded-full ${col.bg} ${col.text}`}>{SHORT[p.status]}</span>
+                {p.etr && <span style={{ fontSize: 11, color: 'var(--accent)', flexShrink: 0 }}>↩ {p.etr}</span>}
               </button>
             );
           })}

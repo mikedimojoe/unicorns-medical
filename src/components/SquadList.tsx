@@ -8,11 +8,22 @@ interface Props {
   onPlayerSelect: (p: Player) => void;
 }
 
-const shortLabel: Record<Status, string> = {
+const SHORT: Record<Status, string> = {
   'Full Training': 'Fit',
   'Full Training (Monitored)': 'Monitored',
   'Return to Play (Physio/S+C)': 'RTP',
   'Out': 'Out',
+};
+
+const inputStyle: React.CSSProperties = {
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
+  borderRadius: 8,
+  color: 'var(--text)',
+  padding: '8px 12px',
+  fontSize: 13,
+  outline: 'none',
+  width: '100%',
 };
 
 export function SquadList({ players, onPlayerSelect }: Props) {
@@ -21,42 +32,34 @@ export function SquadList({ players, onPlayerSelect }: Props) {
   const [statusFilter, setStatusFilter] = useState<Status | 'All'>('All');
 
   const filtered = players.filter(p => {
-    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.position.toLowerCase().includes(search.toLowerCase()) ||
-      (p.injury || '').toLowerCase().includes(search.toLowerCase());
-    const matchUnit = unitFilter === 'All' || p.unit === unitFilter;
-    const matchStatus = statusFilter === 'All' || p.status === statusFilter;
-    return matchSearch && matchUnit && matchStatus;
+    const q = search.toLowerCase();
+    const matchSearch = p.name.toLowerCase().includes(q) || p.position.toLowerCase().includes(q) || (p.injury || '').toLowerCase().includes(q);
+    return matchSearch && (unitFilter === 'All' || p.unit === unitFilter) && (statusFilter === 'All' || p.status === statusFilter);
   });
 
-  const inputStyle = { background: '#150D24', border: '1px solid #2A1A4A' };
-
   return (
-    <div className="p-6 space-y-5">
+    <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div>
-        <h1 className="text-2xl font-bold text-white">Squad Liste</h1>
-        <p className="text-sm mt-1" style={{ color: '#9B8FBF' }}>{players.length} Spieler · Saison 2026</p>
+        <h1 style={{ fontSize: 20, fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>Squad Liste</h1>
+        <p style={{ color: 'var(--text3)', fontSize: 13 }}>{players.length} Spieler · Saison 2026</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#6A5F8F' }} />
+      <div style={{ display: 'flex', gap: 10 }}>
+        <div style={{ position: 'relative', flex: 1 }}>
+          <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--text3)' }} />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Spieler, Position, Verletzung..."
-            className="w-full pl-9 pr-4 py-2.5 rounded-lg text-sm text-white placeholder-gray-600 outline-none"
-            style={inputStyle}
+            style={{ ...inputStyle, paddingLeft: 32 }}
           />
         </div>
-        <select value={unitFilter} onChange={e => setUnitFilter(e.target.value as 'All' | 'Offense' | 'Defense')}
-          className="px-3 py-2.5 rounded-lg text-sm text-white outline-none" style={inputStyle}>
+        <select value={unitFilter} onChange={e => setUnitFilter(e.target.value as any)} style={{ ...inputStyle, width: 'auto' }}>
           <option value="All">Alle Einheiten</option>
           <option value="Offense">Offense</option>
           <option value="Defense">Defense</option>
         </select>
-        <select value={statusFilter} onChange={e => setStatusFilter(e.target.value as Status | 'All')}
-          className="px-3 py-2.5 rounded-lg text-sm text-white outline-none" style={inputStyle}>
+        <select value={statusFilter} onChange={e => setStatusFilter(e.target.value as any)} style={{ ...inputStyle, width: 'auto' }}>
           <option value="All">Alle Status</option>
           <option value="Full Training">Fit</option>
           <option value="Full Training (Monitored)">Monitored</option>
@@ -65,50 +68,47 @@ export function SquadList({ players, onPlayerSelect }: Props) {
         </select>
       </div>
 
-      <div className="text-xs" style={{ color: '#6A5F8F' }}>{filtered.length} Ergebnisse</div>
+      <div style={{ fontSize: 11, color: 'var(--text3)' }}>{filtered.length} Ergebnisse</div>
 
-      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2A1A4A' }}>
-        <div className="overflow-x-auto">
-          <table className="w-full">
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: '#0E0820' }}>
+              <tr style={{ background: 'var(--bg2)' }}>
                 {['#', 'Spieler', 'Pos', 'Einheit', 'Status', 'Verletzung', 'ETR'].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold" style={{ color: '#6A5F8F' }}>{h}</th>
+                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: 11, fontWeight: 600, color: 'var(--text3)', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {filtered.map((p, i) => {
+              {filtered.map(p => {
                 const col = statusColors[p.status];
                 return (
-                  <tr
-                    key={p.id}
-                    onClick={() => onPlayerSelect(p)}
-                    className="cursor-pointer transition-colors hover:bg-white/5"
-                    style={{ borderTop: '1px solid #2A1A4A', background: i % 2 === 0 ? '#150D24' : '#120A20' }}
-                  >
-                    <td className="px-4 py-3">
-                      <span className="text-sm font-bold" style={{ color: '#F0A500' }}>{p.number}</span>
+                  <tr key={p.id} onClick={() => onPlayerSelect(p)} style={{ borderTop: '1px solid var(--border)', cursor: 'pointer', transition: 'background 0.1s' }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface2)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                    <td style={{ padding: '10px 14px' }}>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent)' }}>{p.number}</span>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className="text-sm font-medium text-white">{p.name}</span>
+                    <td style={{ padding: '10px 14px' }}>
+                      <span style={{ fontSize: 13, color: 'var(--text)' }}>{p.name}</span>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded" style={{ background: '#2A1A4A', color: '#BB6FFA' }}>{p.position}</span>
+                    <td style={{ padding: '10px 14px' }}>
+                      <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4, background: 'var(--surface2)', color: 'var(--text2)' }}>{p.position}</span>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className="text-xs" style={{ color: p.unit === 'Offense' ? '#F0A500' : '#7B2DB8' }}>{p.unit}</span>
+                    <td style={{ padding: '10px 14px' }}>
+                      <span style={{ fontSize: 12, color: p.unit === 'Offense' ? 'var(--accent)' : 'var(--team-primary)' }}>{p.unit}</span>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${col.bg} ${col.text}`}>{shortLabel[p.status]}</span>
+                    <td style={{ padding: '10px 14px' }}>
+                      <span className={`text-xs px-2 py-0.5 rounded-full ${col.bg} ${col.text}`}>{SHORT[p.status]}</span>
                     </td>
-                    <td className="px-4 py-3 max-w-xs">
-                      <span className="text-xs truncate block" style={{ color: p.injury ? '#9B8FBF' : '#3A2860', maxWidth: 200 }}>
+                    <td style={{ padding: '10px 14px', maxWidth: 240 }}>
+                      <span style={{ fontSize: 12, color: p.injury ? 'var(--text3)' : 'var(--border)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>
                         {p.injury || '–'}
                       </span>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className="text-xs" style={{ color: '#F0A500' }}>{p.etr || '–'}</span>
+                    <td style={{ padding: '10px 14px' }}>
+                      <span style={{ fontSize: 12, color: 'var(--accent)' }}>{p.etr || '–'}</span>
                     </td>
                   </tr>
                 );
