@@ -29,14 +29,14 @@ export function Sidebar({ open, onClose, current, onNavigate }: Props) {
         style={{ background: 'var(--bg2)', borderRight: '1px solid var(--border)' }}
       >
         <div className="flex items-center justify-between px-4 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
-          <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-xl">🦄</span>
-              <span className="font-bold text-sm leading-tight" style={{ color: 'var(--text)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <img src="/logo.svg" alt="Unicorns" style={{ width: 44, height: 44, borderRadius: 8, flexShrink: 0 }} />
+            <div>
+              <div style={{ fontWeight: 700, fontSize: 12, lineHeight: 1.3, color: 'var(--text)' }}>
                 SCHWÄBISCH HALL<br/>UNICORNS
-              </span>
+              </div>
+              <div style={{ fontSize: 10, fontWeight: 500, color: '#5CBF8A', marginTop: 2 }}>Medical Dashboard</div>
             </div>
-            <span className="text-xs font-medium" style={{ color: 'var(--accent)' }}>Medical Dashboard</span>
           </div>
           <button onClick={onClose} className="lg:hidden p-1 rounded hover:bg-white/10" style={{ color: 'var(--text3)' }}>
             <X size={16} />

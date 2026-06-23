@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="96" fill="#154734"/>
+  <circle cx="100" cy="100" r="96" fill="none" stroke="#ffffff" stroke-width="4" opacity="0.3"/>
+
+  <!-- Unicorn head (simplified, clean) -->
+  <!-- Horn -->
+  <polygon points="100,18 108,52 92,52" fill="#ffffff" opacity="0.95"/>
+  <polygon points="100,18 105,40 95,40" fill="#e8e8e8" opacity="0.5"/>
+
+  <!-- Head shape -->
+  <ellipse cx="100" cy="82" rx="34" ry="30" fill="#ffffff" opacity="0.95"/>
+
+  <!-- Snout -->
+  <ellipse cx="118" cy="96" rx="18" ry="13" fill="#ffffff" opacity="0.95"/>
+
+  <!-- Eye -->
+  <circle cx="108" cy="76" r="5" fill="#154734"/>
+  <circle cx="109.5" cy="74.5" r="1.5" fill="#ffffff"/>
+
+  <!-- Nostril -->
+  <ellipse cx="126" cy="100" rx="3" ry="2" fill="#c8e6d8" opacity="0.8"/>
+
+  <!-- Mane -->
+  <path d="M72,62 Q60,50 65,35 Q72,45 70,60 Q65,52 68,38 Q76,50 73,65" fill="#ffffff" opacity="0.7"/>
+  <path d="M75,70 Q60,60 62,42 Q70,55 68,72" fill="#e8e8e8" opacity="0.5"/>
+
+  <!-- Ear -->
+  <polygon points="82,58 78,44 90,50" fill="#ffffff" opacity="0.9"/>
+
+  <!-- Neck / body hint -->
+  <path d="M68,100 Q64,120 70,140 L130,140 Q136,120 132,100 Q120,110 100,112 Q80,110 68,100Z" fill="#ffffff" opacity="0.85"/>
+
+  <!-- Red medical cross -->
+  <rect x="82" y="118" width="36" height="12" rx="3" fill="#DC2626"/>
+  <rect x="94" y="106" width="12" height="36" rx="3" fill="#DC2626"/>
+
+  <!-- White cross inner highlight -->
+  <rect x="85" y="121" width="30" height="6" rx="2" fill="#ffffff" opacity="0.2"/>
+  <rect x="97" y="109" width="6" height="30" rx="2" fill="#ffffff" opacity="0.2"/>
+</svg>
